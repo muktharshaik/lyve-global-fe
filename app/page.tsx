@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import styles from './page.module.scss';
 
 export default async function Index() {
@@ -8,7 +9,9 @@ export default async function Index() {
    */
   return (
     <div>
-      <h1>hello</h1>
+      <h1>
+        please redirect here <Link href={'/admin'}>Click Here</Link>
+      </h1>
     </div>
   );
 }
