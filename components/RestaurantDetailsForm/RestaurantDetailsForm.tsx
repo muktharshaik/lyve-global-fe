@@ -64,6 +64,7 @@ export function RestaurantDetailsForm(props: Restaurant | any) {
 
   return (
     <div>
+      <h3 className="text-xl text-gray-700 mb-4">Restaurant Details</h3>
       <Box component={'form'} autoComplete="off">
         <TextField
           id="name"
