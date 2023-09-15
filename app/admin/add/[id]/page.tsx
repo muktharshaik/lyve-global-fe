@@ -1,14 +1,15 @@
 import styles from './page.module.scss';
 
-export default async function Index() {
+export default async function Index(props: any) {
   /*
    * Replace the elements below with your own.
    *
    * Note: The corresponding styles are in the ./index.scss file.
    */
+  console.log(props);
   return (
     <div>
-      <h1>hello</h1>
+      <h1>hello admin edit page</h1>
     </div>
   );
 }
