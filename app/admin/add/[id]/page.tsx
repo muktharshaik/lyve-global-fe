@@ -6,7 +6,6 @@ export default async function Index(props: any) {
    *
    * Note: The corresponding styles are in the ./index.scss file.
    */
-  console.log(props);
   return (
     <div>
       <h1>hello admin edit page</h1>
