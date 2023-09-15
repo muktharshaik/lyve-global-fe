@@ -46,6 +46,11 @@ export function RestaurantDetailsForm(props: Restaurant | any) {
       .then((res) => {
         if (res.data.status === 200) {
           toast.success('Restaurant added successfully');
+          setName('');
+          setImage('');
+          setDeliveryTime('');
+          setRating(null);
+          setCostRange(null);
         } else {
           toast.error('Restaurant addition failed');
         }
