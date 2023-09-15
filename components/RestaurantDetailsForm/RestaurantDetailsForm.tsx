@@ -1,3 +1,5 @@
+'use client';
+
 import { Restaurant } from 'types/dataTypes';
 import axios from 'axios';
 import { Box, Button, FormLabel, TextField, styled } from '@mui/material';
@@ -21,8 +23,9 @@ export function RestaurantDetailsForm(props: Restaurant | any) {
   const [name, setName] = useState<string>('');
   const [image, setImage] = useState<string>('');
   const [deliveryTime, setDeliveryTime] = useState<string>('');
-  const [rating, setRating] = useState<number>(0);
-  const [costRange, setCostRange] = useState<number>(0);
+  const [rating, setRating] = useState<number | null>(null);
+  const [costRange, setCostRange] = useState<number | null>(null);
+  const [isError, setIsError] = useState<boolean>(false);
   const formData = new FormData();
 
   const handleSubmit = (e: any) => {
@@ -34,10 +37,18 @@ export function RestaurantDetailsForm(props: Restaurant | any) {
       rating,
       costRange,
     };
+    if (!name || !image || !deliveryTime || !rating || !costRange) {
+      setIsError(true);
+      return;
+    }
     axios
       .post('http://localhost:3000/api/restaurants/add', data)
       .then((res) => {
-        if (res.status === 200) toast.success('Restaurant added successfully');
+        if (res.data.status === 200) {
+          toast.success('Restaurant added successfully');
+        } else {
+          toast.error('Restaurant addition failed');
+        }
       })
       .catch((err) => {
         toast.error(err.response.data);
@@ -71,9 +82,11 @@ export function RestaurantDetailsForm(props: Restaurant | any) {
           label="Name"
           variant="outlined"
           size="small"
+          value={name}
           required
           className="w-[100%] rounded-md"
           onChange={(e) => setName(e.target.value)}
+          error={isError && !name}
         />
         <div className="flex flex-col mt-4">
           <FormLabel className="mt-2">Upload logo</FormLabel>
@@ -89,12 +102,18 @@ export function RestaurantDetailsForm(props: Restaurant | any) {
             <VisuallyHiddenInput type="file" />
           </Button>
           {image && <FormLabel>{image}</FormLabel>}
+          {isError && !image && (
+            <p className="text-red-500">Please upload Image</p>
+          )}
         </div>
         <TextField
           id="deliveryTime"
           label="Delivery Time"
           variant="outlined"
           size="small"
+          value={deliveryTime}
+          required
+          error={isError && !deliveryTime}
           className="w-[100%] rounded-md mt-4"
           onChange={(e) => setDeliveryTime(e.target.value)}
         />
@@ -104,6 +123,9 @@ export function RestaurantDetailsForm(props: Restaurant | any) {
           variant="outlined"
           inputProps={{ type: 'number', min: 0, max: 5 }}
           size="small"
+          required
+          value={rating}
+          error={isError && !rating}
           className="w-[100%] rounded-md mt-4"
           onChange={(e) => setRating(Number(e.target.value))}
         />
@@ -111,6 +133,9 @@ export function RestaurantDetailsForm(props: Restaurant | any) {
           id="constRange"
           label="Cost Range"
           variant="outlined"
+          required
+          value={costRange}
+          error={isError && !costRange}
           inputProps={{ type: 'number', min: 0, max: 5 }}
           size="small"
           className="w-[100%] rounded-md mt-4"
